@@ -5,13 +5,19 @@ import 'package:flutter_chess_board/flutter_chess_board.dart';
 import 'dart:async' show Future;
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:game_template/src/chess/engine.dart';
+<<<<<<< HEAD
 import 'package:game_template/src/games_services/score.dart';
+=======
+>>>>>>> origin/buttons
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../audio/audio_controller.dart';
 import '../audio/sounds.dart';
+<<<<<<< HEAD
 import '../style/confetti.dart';
+=======
+>>>>>>> origin/buttons
 
 class ChessLevelPage extends StatelessWidget {
   final String level_path;
@@ -48,6 +54,7 @@ class _HomePageState extends State<HomePage> {
 
   Engine bot = Engine();
   bool start = true;
+  bool undo = false;
   String fen = "";
 
   static const _preCelebrationDuration = Duration(milliseconds: 200);
@@ -72,6 +79,42 @@ class _HomePageState extends State<HomePage> {
               ),
               body: Column(
                 children: [
+                  ButtonBar(
+                    alignment: MainAxisAlignment.center,
+                    children: [
+                      // ElevatedButton(
+                      //   onPressed: () {
+                      //     if (!start) {
+                      //       undo = true;
+                      //       controller.undoMove();
+                      //       controller.undoMove();
+                      //       fen = "";
+                      //       start = true;
+                      //     }
+                      //   },
+                      //   child: const Text('Undo'),
+                      // ),
+                      ElevatedButton(
+                        onPressed: () {
+                          final audioController = context.read<AudioController>();
+                          audioController.playSfx(SfxType.buttonTap);
+                          fen = "";
+                          start = true;
+                          undo = false;
+                          controller.loadFen(snapshot.requireData);
+                        },
+                        child: const Text('Restart'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          final audioController = context.read<AudioController>();
+                          audioController.playSfx(SfxType.buttonTap);
+                          GoRouter.of(context).go('/play');
+                        },
+                        child: const Text('Back'),
+                      ),
+                    ],
+                  ),
                   Expanded(
                     child: Center(
                       child: ChessBoard(
@@ -101,8 +144,12 @@ class _HomePageState extends State<HomePage> {
                           }
                         } else if (controller.isCheckMate()) {
                           playerWin(context, game);
-                        } else {
+                        } else if (start) {
+                          fen = game.fen;
+                        } else if (!undo) {
                           start = false;
+                        } else {
+                          undo = false;
                         }
 
                         return Text(
