@@ -31,7 +31,7 @@ class MainMenuScreen extends StatelessWidget {
           child: Transform.rotate(
             angle: -0.1,
             child: const Text(
-              'Flutter Game Template!',
+              'Chess!',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'Permanent Marker',
@@ -105,11 +105,6 @@ class MainMenuScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () => GoRouter.of(context).push('/settings'),
               child: const Text('Settings'),
-            ),
-            _gap,
-            ElevatedButton(
-              onPressed: () => GoRouter.of(context).push('/chess'),
-              child: const Text('Chess'),
             ),
             _gap,
             Padding(

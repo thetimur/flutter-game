@@ -43,6 +43,10 @@ flutter:
 
   assets:
     - assets/levels/one_move/
+    - assets/levels/two_move/
+    - assets/levels/three_move/
+    - assets/levels/four_move/
+    - assets/levels/
     - assets/images/
     - assets/music/
     - assets/sfx/

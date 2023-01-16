@@ -23,8 +23,6 @@ import 'src/crashlytics/crashlytics.dart';
 import 'src/games_services/games_services.dart';
 import 'src/games_services/score.dart';
 import 'src/in_app_purchase/in_app_purchase.dart';
-import 'src/level_selection/level_selection_screen.dart';
-import 'src/level_selection/levels.dart';
 import 'src/level_selection_one_move/level_selection_screen.dart';
 import 'src/level_selection_one_move/levels.dart';
 import 'src/level_selection_two_move/level_selection_screen.dart';
@@ -142,6 +140,21 @@ class MyApp extends StatelessWidget {
               const MainMenuScreen(key: Key('main menu')),
           routes: [
             GoRoute(
+              path: 'won',
+              pageBuilder: (context, state) {
+                final map = state.extra! as Map<String, dynamic>;
+                final score = map['score'] as Score;
+
+                return buildMyTransition<void>(
+                  child: WinGameScreen(
+                    score: score,
+                    key: const Key('win game'),
+                  ),
+                  color: context.watch<Palette>().backgroundPlaySession,
+                );
+              },
+            ),
+            GoRoute(
                 path: 'one_move',
                 pageBuilder: (context, state) => buildMyTransition<void>(
                       child: const LevelSelectionOneMoveScreen(
@@ -159,26 +172,12 @@ class MyApp extends StatelessWidget {
                         child: ChessLevelPage(
                           key: const Key('play session'),
                           level_path: level.level_path,
+                          needed_turns: 1,
                         ),
                         color: context.watch<Palette>().backgroundPlaySession,
                       );
                     },
                   ),
-                  GoRoute(
-                    path: 'won',
-                    pageBuilder: (context, state) {
-                      final map = state.extra! as Map<String, dynamic>;
-                      final score = map['score'] as Score;
-
-                      return buildMyTransition<void>(
-                        child: WinGameScreen(
-                          score: score,
-                          key: const Key('win game'),
-                        ),
-                        color: context.watch<Palette>().backgroundPlaySession,
-                      );
-                    },
-                  )
                 ]),
             GoRoute(
                 path: 'two_move',
@@ -197,27 +196,12 @@ class MyApp extends StatelessWidget {
                       return buildMyTransition<void>(
                         child: ChessLevelPage(
                           key: const Key('play session'),
-                          level_path: level.level_path,
+                          level_path: level.level_path, needed_turns: 2,
                         ),
                         color: context.watch<Palette>().backgroundPlaySession,
                       );
                     },
                   ),
-                  GoRoute(
-                    path: 'won',
-                    pageBuilder: (context, state) {
-                      final map = state.extra! as Map<String, dynamic>;
-                      final score = map['score'] as Score;
-
-                      return buildMyTransition<void>(
-                        child: WinGameScreen(
-                          score: score,
-                          key: const Key('win game'),
-                        ),
-                        color: context.watch<Palette>().backgroundPlaySession,
-                      );
-                    },
-                  )
                 ]),
             GoRoute(
                 path: 'three_move',
@@ -236,27 +220,12 @@ class MyApp extends StatelessWidget {
                       return buildMyTransition<void>(
                         child: ChessLevelPage(
                           key: const Key('play session'),
-                          level_path: level.level_path,
+                          level_path: level.level_path, needed_turns: 3,
                         ),
                         color: context.watch<Palette>().backgroundPlaySession,
                       );
                     },
                   ),
-                  GoRoute(
-                    path: 'won',
-                    pageBuilder: (context, state) {
-                      final map = state.extra! as Map<String, dynamic>;
-                      final score = map['score'] as Score;
-
-                      return buildMyTransition<void>(
-                        child: WinGameScreen(
-                          score: score,
-                          key: const Key('win game'),
-                        ),
-                        color: context.watch<Palette>().backgroundPlaySession,
-                      );
-                    },
-                  )
                 ]),
             GoRoute(
                 path: 'four_move',
@@ -275,27 +244,12 @@ class MyApp extends StatelessWidget {
                       return buildMyTransition<void>(
                         child: ChessLevelPage(
                           key: const Key('play session'),
-                          level_path: level.level_path,
+                          level_path: level.level_path, needed_turns: 4,
                         ),
                         color: context.watch<Palette>().backgroundPlaySession,
                       );
                     },
                   ),
-                  GoRoute(
-                    path: 'won',
-                    pageBuilder: (context, state) {
-                      final map = state.extra! as Map<String, dynamic>;
-                      final score = map['score'] as Score;
-
-                      return buildMyTransition<void>(
-                        child: WinGameScreen(
-                          score: score,
-                          key: const Key('win game'),
-                        ),
-                        color: context.watch<Palette>().backgroundPlaySession,
-                      );
-                    },
-                  )
                 ]),
             GoRoute(
                 path: 'fight',
@@ -314,27 +268,12 @@ class MyApp extends StatelessWidget {
                       return buildMyTransition<void>(
                         child: ChessLevelPage(
                           key: const Key('play session'),
-                          level_path: level.level_path,
+                          level_path: level.level_path, needed_turns: 60,
                         ),
                         color: context.watch<Palette>().backgroundPlaySession,
                       );
                     },
                   ),
-                  GoRoute(
-                    path: 'won',
-                    pageBuilder: (context, state) {
-                      final map = state.extra! as Map<String, dynamic>;
-                      final score = map['score'] as Score;
-
-                      return buildMyTransition<void>(
-                        child: WinGameScreen(
-                          score: score,
-                          key: const Key('win game'),
-                        ),
-                        color: context.watch<Palette>().backgroundPlaySession,
-                      );
-                    },
-                  )
                 ]),
             GoRoute(
               path: 'settings',

@@ -14,9 +14,9 @@ import '../audio/sounds.dart';
 
 class ChessLevelPage extends StatelessWidget {
   final String level_path;
-  final int needed_turns = 1;
+  final int needed_turns;
 
-  const ChessLevelPage({Key? key, required this.level_path}) : super(key: key);
+  const ChessLevelPage({Key? key, required this.level_path, required this.needed_turns}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -82,10 +82,7 @@ class _HomePageState extends State<HomePage> {
                         onPressed: () {
                           final audioController = context.read<AudioController>();
                           audioController.playSfx(SfxType.buttonTap);
-                          fen = "";
-                          start = true;
-                          undo = false;
-                          controller.loadFen(snapshot.requireData);
+                          resetLevel(snapshot);
                         },
                         child: const Text('Restart'),
                       ),
@@ -93,7 +90,7 @@ class _HomePageState extends State<HomePage> {
                         onPressed: () {
                           final audioController = context.read<AudioController>();
                           audioController.playSfx(SfxType.buttonTap);
-                          GoRouter.of(context).go('/play');
+                          GoRouter.of(context).go('/');
                         },
                         child: const Text('Back'),
                       ),
@@ -124,6 +121,7 @@ class _HomePageState extends State<HomePage> {
                           fen = game.fen;
 
                           if (controller.isCheckMate()) {
+                            resetLevel(snapshot);
                             return Text("Looser, try again!");
                           }
                         } else if (controller.isCheckMate()) {
@@ -151,6 +149,13 @@ class _HomePageState extends State<HomePage> {
         });
   }
 
+  void resetLevel(AsyncSnapshot<String> snapshot) {
+    fen = "";
+    start = true;
+    undo = false;
+    controller.loadFen(snapshot.requireData);
+  }
+
   void botWin() {
   }
 
@@ -170,6 +175,7 @@ class _HomePageState extends State<HomePage> {
 
     Score score = Score(needed_turns, controller.getMoveCount(), Duration(seconds: 10));
     audioController.playSfx(SfxType.values.first);
-    GoRouter.of(context).go('/play/won', extra: {'score': score});
+
+    GoRouter.of(context).go('/won', extra: {'score': score});
   }
 }

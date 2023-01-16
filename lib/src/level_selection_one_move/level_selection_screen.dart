@@ -19,7 +19,6 @@ class LevelSelectionOneMoveScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = context.watch<Palette>();
-    final playerProgress = context.watch<PlayerProgress>();
 
     return Scaffold(
       backgroundColor: palette.backgroundLevelSelection,
@@ -42,8 +41,7 @@ class LevelSelectionOneMoveScreen extends StatelessWidget {
                 children: [
                   for (final level in gameLevelsOneMove)
                     ListTile(
-                      enabled: playerProgress.highestLevelReached >=
-                          level.number - 1,
+                      enabled: true,
                       onTap: () {
                         final audioController = context.read<AudioController>();
                         audioController.playSfx(SfxType.buttonTap);

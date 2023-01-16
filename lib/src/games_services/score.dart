@@ -21,7 +21,7 @@ class Score {
     // return Score._(score, duration, level);
     int score = 100;
     if (level < difficulty) {
-      score = 50;
+      score = 0;
     } else if (level > difficulty) {
       score = 200;
     }
