@@ -4,6 +4,10 @@ import 'dart:async' show Future;
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:game_template/src/chess/engine.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+
+import '../audio/audio_controller.dart';
+import '../audio/sounds.dart';
 
 class ChessLevelPage extends StatelessWidget {
   final String level_path;
@@ -80,6 +84,8 @@ class _HomePageState extends State<HomePage> {
                       // ),
                       ElevatedButton(
                         onPressed: () {
+                          final audioController = context.read<AudioController>();
+                          audioController.playSfx(SfxType.buttonTap);
                           fen = "";
                           start = true;
                           undo = false;
@@ -89,6 +95,8 @@ class _HomePageState extends State<HomePage> {
                       ),
                       ElevatedButton(
                         onPressed: () {
+                          final audioController = context.read<AudioController>();
+                          audioController.playSfx(SfxType.buttonTap);
                           GoRouter.of(context).go('/play');
                         },
                         child: const Text('Back'),
