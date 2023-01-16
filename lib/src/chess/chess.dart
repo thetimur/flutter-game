@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chess_board/flutter_chess_board.dart';
+import 'package:game_template/src/chess/engine.dart';
 
 class ChessHomePage extends StatelessWidget {
   const ChessHomePage({Key? key}) : super(key: key);
@@ -25,6 +26,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   ChessBoardController controller = ChessBoardController();
+  Engine bot = Engine();
+  bool start = true;
+  String fen = "";
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +63,18 @@ class _HomePageState extends State<HomePage> {
             child: ValueListenableBuilder<Chess>(
               valueListenable: controller,
               builder: (context, game, _) {
+                print(game.fen);
+
+                if (!start && fen != game.fen) {
+                  bot = Engine.fromFEN(game.fen);
+                  List<String> move = bot.play().split(" ");
+                  print(move);
+                  controller.makeMove(from: move[0], to: move[1]);
+                  fen = game.fen;
+                } else {
+                  start = false;
+                }
+
                 return Text(
                   controller.getSan().fold(
                     '',
