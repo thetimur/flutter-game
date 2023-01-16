@@ -75,10 +75,15 @@ class _HomePageState extends State<HomePage> {
                     child: ValueListenableBuilder<Chess>(
                       valueListenable: controller,
                       builder: (context, game, _) {
-                        if (!start && fen != game.fen) {
+
+                        if (start) {
+                          fen = game.fen;
+                        }
+
+                        if (!start && fen != game.fen && !controller.isCheckMate()) {
                           bot = Engine.fromFEN(game.fen);
                           List<String> move = bot.play().split(" ");
-                          print(move);
+                          //print(move);
                           controller.makeMove(from: move[0], to: move[1]);
                           fen = game.fen;
                         } else {

@@ -98,10 +98,10 @@ class Engine extends Chess {
 
     var lastMove = getHistory({"verbose": true}).last;
     String lanstr = lastMove['from'] + " " + lastMove['to'];
-    if (lastMove['flags'].contains('p')) {
-      String san = lastMove['san'].toString().toLowerCase();
-      lanstr += san.substring(san.length - 1);
-    }
+    // if (lastMove['flags'].contains('p')) {
+    //   String san = lastMove['san'].toString().toLowerCase();
+    //   lanstr += san.substring(san.length - 1);
+    // }
     return lanstr;
   }
 
