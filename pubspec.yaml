@@ -42,6 +42,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/levels/one_move/
     - assets/images/
     - assets/music/
     - assets/sfx/

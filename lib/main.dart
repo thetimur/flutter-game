@@ -12,6 +12,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:game_template/src/chess/chess.dart';
+import 'package:game_template/src/chess/chess_level_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
@@ -147,9 +148,9 @@ class MyApp extends StatelessWidget {
                       final level = gameLevels
                           .singleWhere((e) => e.number == levelNumber);
                       return buildMyTransition<void>(
-                        child: PlaySessionScreen(
-                          level,
+                        child: ChessLevelPage(
                           key: const Key('play session'),
+                          level_path: level.level_path,
                         ),
                         color: context.watch<Palette>().backgroundPlaySession,
                       );
