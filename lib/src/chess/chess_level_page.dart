@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chess_board/flutter_chess_board.dart';
 import 'dart:async' show Future;
 import 'package:flutter/services.dart' show rootBundle;
-
+import 'package:game_template/src/chess/engine.dart';
 
 class ChessLevelPage extends StatelessWidget {
   final String level_path;
@@ -36,6 +36,10 @@ class _HomePageState extends State<HomePage> {
   ChessBoardController controller = ChessBoardController();
 
   _HomePageState(this.level_path);
+
+  Engine bot = Engine();
+  bool start = true;
+  String fen = "";
 
   Future<String> loadAsset(String path) async {
     print('assets/' + path);
@@ -71,6 +75,16 @@ class _HomePageState extends State<HomePage> {
                     child: ValueListenableBuilder<Chess>(
                       valueListenable: controller,
                       builder: (context, game, _) {
+                        if (!start && fen != game.fen) {
+                          bot = Engine.fromFEN(game.fen);
+                          List<String> move = bot.play().split(" ");
+                          print(move);
+                          controller.makeMove(from: move[0], to: move[1]);
+                          fen = game.fen;
+                        } else {
+                          start = false;
+                        }
+
                         checkWinCondition(context, game);
                         return Text(
                           controller.getSan().fold(
@@ -94,7 +108,7 @@ class _HomePageState extends State<HomePage> {
 
   void checkWinCondition(BuildContext context, Chess game) {
     if (game.in_checkmate) {
-
+      print("MATE, blyad");
     }
   }
 }
