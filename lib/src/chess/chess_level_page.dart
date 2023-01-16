@@ -14,6 +14,7 @@ import '../audio/sounds.dart';
 
 class ChessLevelPage extends StatelessWidget {
   final String level_path;
+  final int needed_turns = 1;
 
   const ChessLevelPage({Key? key, required this.level_path}) : super(key: key);
 
@@ -24,26 +25,28 @@ class ChessLevelPage extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(level_path: this.level_path),
+      home: HomePage(level_path: this.level_path, needed_turns: this.needed_turns),
     );
   }
 }
 
 class HomePage extends StatefulWidget {
   final String level_path;
+  final int needed_turns;
 
-  const HomePage({Key? key, required this.level_path}) : super(key: key);
+  const HomePage({Key? key, required this.level_path, required this.needed_turns}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState(level_path);
+  _HomePageState createState() => _HomePageState(level_path, needed_turns);
 }
 
 class _HomePageState extends State<HomePage> {
   final String level_path;
+  final int needed_turns;
 
   ChessBoardController controller = ChessBoardController();
 
-  _HomePageState(this.level_path);
+  _HomePageState(this.level_path, this.needed_turns);
 
   Engine bot = Engine();
   bool start = true;
@@ -165,7 +168,7 @@ class _HomePageState extends State<HomePage> {
     await Future<void>.delayed(_preCelebrationDuration);
     if (!mounted) return;
 
-    Score score = Score(1, 1, Duration(seconds: 10));
+    Score score = Score(needed_turns, controller.getMoveCount(), Duration(seconds: 10));
     audioController.playSfx(SfxType.values.first);
     GoRouter.of(context).go('/play/won', extra: {'score': score});
   }
