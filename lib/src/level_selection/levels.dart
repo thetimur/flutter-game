@@ -4,24 +4,20 @@
 
 const gameLevels = [
   GameLevel(
-    number: 1,
-    difficulty: 5,
-    // TODO: When ready, change these achievement IDs.
-    // You configure this in App Store Connect.
-    achievementIdIOS: 'first_win',
-    // You get this string when you configure an achievement in Play Console.
-    achievementIdAndroid: 'NhkIwB69ejkMAOOLDb',
-  ),
+      number: 1,
+      difficulty: 5,
+      // You configure this in App Store Connect.
+      achievementIdIOS: 'first_win',
+      // You get this string when you configure an achievement in Play Console.
+      achievementIdAndroid: 'NhkIwB69ejkMAOOLDb',
+      level_path: 'levels/one_move/task_1.txt'),
+  GameLevel(number: 2, difficulty: 42, level_path: 'levels/one_move/task_2.txt'),
   GameLevel(
-    number: 2,
-    difficulty: 42,
-  ),
-  GameLevel(
-    number: 3,
-    difficulty: 100,
-    achievementIdIOS: 'finished',
-    achievementIdAndroid: 'CdfIhE96aspNWLGSQg',
-  ),
+      number: 3,
+      difficulty: 100,
+      achievementIdIOS: 'finished',
+      achievementIdAndroid: 'CdfIhE96aspNWLGSQg',
+      level_path: 'levels/one_move/task_3.txt'),
 ];
 
 class GameLevel {
@@ -34,6 +30,8 @@ class GameLevel {
 
   final String? achievementIdAndroid;
 
+  final String level_path;
+
   bool get awardsAchievement => achievementIdAndroid != null;
 
   const GameLevel({
@@ -41,6 +39,7 @@ class GameLevel {
     required this.difficulty,
     this.achievementIdIOS,
     this.achievementIdAndroid,
+    required this.level_path,
   }) : assert(
             (achievementIdAndroid != null && achievementIdIOS != null) ||
                 (achievementIdAndroid == null && achievementIdIOS == null),
