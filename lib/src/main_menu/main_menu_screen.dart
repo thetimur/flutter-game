@@ -47,9 +47,41 @@ class MainMenuScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 audioController.playSfx(SfxType.buttonTap);
-                GoRouter.of(context).go('/play');
+                GoRouter.of(context).go('/one_move');
               },
-              child: const Text('Play'),
+              child: const Text('Checkmate in one moves'),
+            ),
+            _gap,
+            ElevatedButton(
+              onPressed: () {
+                audioController.playSfx(SfxType.buttonTap);
+                GoRouter.of(context).go('/two_move');
+              },
+              child: const Text('Checkmate in two moves'),
+            ),
+            _gap,
+            ElevatedButton(
+              onPressed: () {
+                audioController.playSfx(SfxType.buttonTap);
+                GoRouter.of(context).go('/three_move');
+              },
+              child: const Text('Checkmate in three moves'),
+            ),
+            _gap,
+            ElevatedButton(
+              onPressed: () {
+                audioController.playSfx(SfxType.buttonTap);
+                GoRouter.of(context).go('/four_move');
+              },
+              child: const Text('Checkmate in four moves'),
+            ),
+            _gap,
+            ElevatedButton(
+              onPressed: () {
+                audioController.playSfx(SfxType.buttonTap);
+                GoRouter.of(context).go('/fight');
+              },
+              child: const Text('Chess fights'),
             ),
             _gap,
             if (gamesServicesController != null) ...[
