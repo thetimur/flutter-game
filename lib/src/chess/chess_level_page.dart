@@ -82,19 +82,7 @@ class _HomePageState extends State<HomePage> {
                   ButtonBar(
                     alignment: MainAxisAlignment.center,
                     children: [
-                      // ElevatedButton(
-                      //   onPressed: () {
-                      //     if (!start) {
-                      //       undo = true;
-                      //       controller.undoMove();
-                      //       controller.undoMove();
-                      //       fen = "";
-                      //       start = true;
-                      //     }
-                      //   },
-                      //   child: const Text('Undo'),
-                      // ),
-                      ElevatedButton(
+                     ElevatedButton(
                         onPressed: () {
                           final audioController = context.read<AudioController>();
                           audioController.playSfx(SfxType.buttonTap);
@@ -144,12 +132,8 @@ class _HomePageState extends State<HomePage> {
                           }
                         } else if (controller.isCheckMate()) {
                           playerWin(context, game);
-                        } else if (start) {
-                          fen = game.fen;
-                        } else if (!undo) {
-                          start = false;
                         } else {
-                          undo = false;
+                          start = false;
                         }
 
                         return Text(
