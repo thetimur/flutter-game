@@ -1,8 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_chess_board/flutter_chess_board.dart';
 import 'dart:async' show Future;
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:game_template/src/chess/engine.dart';
+import 'package:game_template/src/games_services/score.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+
+import '../audio/audio_controller.dart';
+import '../audio/sounds.dart';
+import '../style/confetti.dart';
 
 class ChessLevelPage extends StatelessWidget {
   final String level_path;
@@ -41,6 +50,8 @@ class _HomePageState extends State<HomePage> {
   bool start = true;
   String fen = "";
 
+  static const _preCelebrationDuration = Duration(milliseconds: 200);
+
   Future<String> loadAsset(String path) async {
     print('assets/' + path);
     String res = await rootBundle.loadString('assets/' + path);
@@ -75,23 +86,31 @@ class _HomePageState extends State<HomePage> {
                     child: ValueListenableBuilder<Chess>(
                       valueListenable: controller,
                       builder: (context, game, _) {
-                        if (!start && fen != game.fen) {
-                          bot = Engine.fromFEN(game.fen);
-                          List<String> move = bot.play().split(" ");
-                          print(move);
-                          controller.makeMove(from: move[0], to: move[1]);
+                        if (start) {
                           fen = game.fen;
+                        }
+
+                        if (!start &&
+                            fen != game.fen &&
+                            !controller.isCheckMate()) {
+                          makeBotMove(game);
+                          fen = game.fen;
+
+                          if (controller.isCheckMate()) {
+                            return Text("Looser, try again!");
+                          }
+                        } else if (controller.isCheckMate()) {
+                          playerWin(context, game);
                         } else {
                           start = false;
                         }
 
-                        checkWinCondition(context, game);
                         return Text(
                           controller.getSan().fold(
-                            '',
+                                '',
                                 (previousValue, element) =>
-                            previousValue + '\n' + (element ?? ''),
-                          ),
+                                    previousValue + '\n' + (element ?? ''),
+                              ),
                         );
                       },
                     ),
@@ -102,13 +121,28 @@ class _HomePageState extends State<HomePage> {
           } else {
             return CircularProgressIndicator();
           }
-        }
-    );
+        });
   }
 
-  void checkWinCondition(BuildContext context, Chess game) {
-    if (game.in_checkmate) {
-      print("MATE, blyad");
-    }
+  void botWin() {
+  }
+
+  void makeBotMove(Chess game) async {
+    bot = Engine.fromFEN(game.fen);
+    List<String> move = bot.play().split(" ");
+    controller.makeMove(from: move[0], to: move[1]);
+  }
+
+  void playerWin(BuildContext context, Chess game) async {
+    final audioController = context.read<AudioController>();
+    audioController.playSfx(SfxType.congrats);
+
+    // Let the player see the game just after winning for a bit.
+    await Future<void>.delayed(_preCelebrationDuration);
+    if (!mounted) return;
+
+    Score score = Score(1, 1, Duration(seconds: 10));
+    audioController.playSfx(SfxType.values.first);
+    GoRouter.of(context).go('/play/won', extra: {'score': score});
   }
 }
