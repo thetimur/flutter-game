@@ -5,19 +5,12 @@ import 'package:flutter_chess_board/flutter_chess_board.dart';
 import 'dart:async' show Future;
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:game_template/src/chess/engine.dart';
-<<<<<<< HEAD
 import 'package:game_template/src/games_services/score.dart';
-=======
->>>>>>> origin/buttons
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../audio/audio_controller.dart';
 import '../audio/sounds.dart';
-<<<<<<< HEAD
-import '../style/confetti.dart';
-=======
->>>>>>> origin/buttons
 
 class ChessLevelPage extends StatelessWidget {
   final String level_path;
