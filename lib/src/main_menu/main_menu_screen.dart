@@ -75,6 +75,11 @@ class MainMenuScreen extends StatelessWidget {
               child: const Text('Settings'),
             ),
             _gap,
+            ElevatedButton(
+              onPressed: () => GoRouter.of(context).push('/chess'),
+              child: const Text('Chess'),
+            ),
+            _gap,
             Padding(
               padding: const EdgeInsets.only(top: 32),
               child: ValueListenableBuilder<bool>(
