@@ -3,6 +3,7 @@ import 'package:flutter_chess_board/flutter_chess_board.dart';
 import 'dart:async' show Future;
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:game_template/src/chess/engine.dart';
+import 'package:go_router/go_router.dart';
 
 class ChessLevelPage extends StatelessWidget {
   final String level_path;
@@ -39,6 +40,7 @@ class _HomePageState extends State<HomePage> {
 
   Engine bot = Engine();
   bool start = true;
+  bool undo = false;
   String fen = "";
 
   Future<String> loadAsset(String path) async {
@@ -61,6 +63,38 @@ class _HomePageState extends State<HomePage> {
               ),
               body: Column(
                 children: [
+                  ButtonBar(
+                    alignment: MainAxisAlignment.center,
+                    children: [
+                      // ElevatedButton(
+                      //   onPressed: () {
+                      //     if (!start) {
+                      //       undo = true;
+                      //       controller.undoMove();
+                      //       controller.undoMove();
+                      //       fen = "";
+                      //       start = true;
+                      //     }
+                      //   },
+                      //   child: const Text('Undo'),
+                      // ),
+                      ElevatedButton(
+                        onPressed: () {
+                          fen = "";
+                          start = true;
+                          undo = false;
+                          controller.loadFen(snapshot.requireData);
+                        },
+                        child: const Text('Restart'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          GoRouter.of(context).go('/play');
+                        },
+                        child: const Text('Back'),
+                      ),
+                    ],
+                  ),
                   Expanded(
                     child: Center(
                       child: ChessBoard(
@@ -80,14 +114,17 @@ class _HomePageState extends State<HomePage> {
                           fen = game.fen;
                         }
 
-                        if (!start && fen != game.fen && !controller.isCheckMate()) {
+                        if (!start && fen != game.fen && !controller.isCheckMate() &&
+                        !undo) {
                           bot = Engine.fromFEN(game.fen);
                           List<String> move = bot.play().split(" ");
                           //print(move);
                           controller.makeMove(from: move[0], to: move[1]);
                           fen = game.fen;
-                        } else {
+                        } else if (!undo) {
                           start = false;
+                        } else {
+                          undo = false;
                         }
 
                         checkWinCondition(context, game);
