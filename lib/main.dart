@@ -26,6 +26,16 @@ import 'src/games_services/score.dart';
 import 'src/in_app_purchase/in_app_purchase.dart';
 import 'src/level_selection/level_selection_screen.dart';
 import 'src/level_selection/levels.dart';
+import 'src/level_selection_one_move/level_selection_screen.dart';
+import 'src/level_selection_one_move/levels.dart';
+import 'src/level_selection_two_move/level_selection_screen.dart';
+import 'src/level_selection_two_move/levels.dart';
+import 'src/level_selection_three_move/level_selection_screen.dart';
+import 'src/level_selection_three_move/levels.dart';
+import 'src/level_selection_four_move/level_selection_screen.dart';
+import 'src/level_selection_four_move/levels.dart';
+import 'src/level_selection_fight/level_selection_screen.dart';
+import 'src/level_selection_fight/levels.dart';
 import 'src/main_menu/main_menu_screen.dart';
 import 'src/play_session/play_session_screen.dart';
 import 'src/player_progress/persistence/local_storage_player_progress_persistence.dart';
@@ -134,9 +144,9 @@ class MyApp extends StatelessWidget {
               const MainMenuScreen(key: Key('main menu')),
           routes: [
             GoRoute(
-                path: 'play',
+                path: 'one_move',
                 pageBuilder: (context, state) => buildMyTransition<void>(
-                      child: const LevelSelectionScreen(
+                      child: const LevelSelectionOneMoveScreen(
                           key: Key('level selection')),
                       color: context.watch<Palette>().backgroundLevelSelection,
                     ),
@@ -145,7 +155,163 @@ class MyApp extends StatelessWidget {
                     path: 'session/:level',
                     pageBuilder: (context, state) {
                       final levelNumber = int.parse(state.params['level']!);
-                      final level = gameLevels
+                      final level = gameLevelsOneMove
+                          .singleWhere((e) => e.number == levelNumber);
+                      return buildMyTransition<void>(
+                        child: ChessLevelPage(
+                          key: const Key('play session'),
+                          level_path: level.level_path,
+                        ),
+                        color: context.watch<Palette>().backgroundPlaySession,
+                      );
+                    },
+                  ),
+                  GoRoute(
+                    path: 'won',
+                    pageBuilder: (context, state) {
+                      final map = state.extra! as Map<String, dynamic>;
+                      final score = map['score'] as Score;
+
+                      return buildMyTransition<void>(
+                        child: WinGameScreen(
+                          score: score,
+                          key: const Key('win game'),
+                        ),
+                        color: context.watch<Palette>().backgroundPlaySession,
+                      );
+                    },
+                  )
+                ]),
+            GoRoute(
+                path: 'two_move',
+                pageBuilder: (context, state) => buildMyTransition<void>(
+                  child: const LevelSelectionTwoMoveScreen(
+                      key: Key('level selection 2')),
+                  color: context.watch<Palette>().backgroundLevelSelection,
+                ),
+                routes: [
+                  GoRoute(
+                    path: 'session/:level',
+                    pageBuilder: (context, state) {
+                      final levelNumber = int.parse(state.params['level']!);
+                      final level = gameLevelsTwoMove
+                          .singleWhere((e) => e.number == levelNumber);
+                      return buildMyTransition<void>(
+                        child: ChessLevelPage(
+                          key: const Key('play session'),
+                          level_path: level.level_path,
+                        ),
+                        color: context.watch<Palette>().backgroundPlaySession,
+                      );
+                    },
+                  ),
+                  GoRoute(
+                    path: 'won',
+                    pageBuilder: (context, state) {
+                      final map = state.extra! as Map<String, dynamic>;
+                      final score = map['score'] as Score;
+
+                      return buildMyTransition<void>(
+                        child: WinGameScreen(
+                          score: score,
+                          key: const Key('win game'),
+                        ),
+                        color: context.watch<Palette>().backgroundPlaySession,
+                      );
+                    },
+                  )
+                ]),
+            GoRoute(
+                path: 'three_move',
+                pageBuilder: (context, state) => buildMyTransition<void>(
+                  child: const LevelSelectionThreeMoveScreen(
+                      key: Key('level selection 3')),
+                  color: context.watch<Palette>().backgroundLevelSelection,
+                ),
+                routes: [
+                  GoRoute(
+                    path: 'session/:level',
+                    pageBuilder: (context, state) {
+                      final levelNumber = int.parse(state.params['level']!);
+                      final level = gameLevelsThreeMove
+                          .singleWhere((e) => e.number == levelNumber);
+                      return buildMyTransition<void>(
+                        child: ChessLevelPage(
+                          key: const Key('play session'),
+                          level_path: level.level_path,
+                        ),
+                        color: context.watch<Palette>().backgroundPlaySession,
+                      );
+                    },
+                  ),
+                  GoRoute(
+                    path: 'won',
+                    pageBuilder: (context, state) {
+                      final map = state.extra! as Map<String, dynamic>;
+                      final score = map['score'] as Score;
+
+                      return buildMyTransition<void>(
+                        child: WinGameScreen(
+                          score: score,
+                          key: const Key('win game'),
+                        ),
+                        color: context.watch<Palette>().backgroundPlaySession,
+                      );
+                    },
+                  )
+                ]),
+            GoRoute(
+                path: 'four_move',
+                pageBuilder: (context, state) => buildMyTransition<void>(
+                  child: const LevelSelectionFourMoveScreen(
+                      key: Key('level selection 4')),
+                  color: context.watch<Palette>().backgroundLevelSelection,
+                ),
+                routes: [
+                  GoRoute(
+                    path: 'session/:level',
+                    pageBuilder: (context, state) {
+                      final levelNumber = int.parse(state.params['level']!);
+                      final level = gameLevelsFourMove
+                          .singleWhere((e) => e.number == levelNumber);
+                      return buildMyTransition<void>(
+                        child: ChessLevelPage(
+                          key: const Key('play session'),
+                          level_path: level.level_path,
+                        ),
+                        color: context.watch<Palette>().backgroundPlaySession,
+                      );
+                    },
+                  ),
+                  GoRoute(
+                    path: 'won',
+                    pageBuilder: (context, state) {
+                      final map = state.extra! as Map<String, dynamic>;
+                      final score = map['score'] as Score;
+
+                      return buildMyTransition<void>(
+                        child: WinGameScreen(
+                          score: score,
+                          key: const Key('win game'),
+                        ),
+                        color: context.watch<Palette>().backgroundPlaySession,
+                      );
+                    },
+                  )
+                ]),
+            GoRoute(
+                path: 'fight',
+                pageBuilder: (context, state) => buildMyTransition<void>(
+                  child: const LevelSelectionFightScreen(
+                      key: Key('level selection 5')),
+                  color: context.watch<Palette>().backgroundLevelSelection,
+                ),
+                routes: [
+                  GoRoute(
+                    path: 'session/:level',
+                    pageBuilder: (context, state) {
+                      final levelNumber = int.parse(state.params['level']!);
+                      final level = gameLevelsFight
                           .singleWhere((e) => e.number == levelNumber);
                       return buildMyTransition<void>(
                         child: ChessLevelPage(
